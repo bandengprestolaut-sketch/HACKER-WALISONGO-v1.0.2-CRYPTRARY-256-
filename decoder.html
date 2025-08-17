@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Decoder Tool [SECURED]</title>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --text-color: #00ff00;
+            --input-bg: #111;
+            --input-border: #00ff00;
+            --error-color: #ff0033;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Source Code Pro', monospace;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container, .decoder-container {
+            max-width: 800px;
+            margin: 20px;
+            border: 1px solid #00ff00;
+            padding: 30px;
+            box-shadow: 0 0 15px #00ff00;
+            animation: border-pulse 3s infinite;
+        }
+
+        @keyframes border-pulse {
+            0%, 100% { box-shadow: 0 0 15px #00ff00; }
+            50% { box-shadow: 0 0 25px #00ff00; }
+        }
+
+        h1 {
+            text-align: center;
+            text-shadow: 0 0 5px #00ff00;
+            margin-top: 0;
+        }
+
+        .chat-link {
+            color: #00ff00;
+            text-decoration: none;
+            font-size: 0.8rem;
+            border: 1px solid #00ff00;
+            padding: 5px 10px;
+            border-radius: 3px;
+            display: inline-block;
+            margin-bottom: 20px;
+            transition: all 0.2s;
+        }
+
+        .chat-link:hover {
+            background-color: #00ff00;
+            color: #000;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-color);
+            font-family: 'Source Code Pro', monospace;
+            padding: 12px;
+            outline: none;
+        }
+
+        button {
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-color);
+            font-family: 'Source Code Pro', monospace;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #00ff00;
+            color: #000;
+        }
+
+        .error-message {
+            color: var(--error-color);
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .decoder-area {
+            display: none; /* Hidden until login */
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        textarea {
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-color);
+            font-family: 'Source Code Pro', monospace;
+            padding: 10px;
+            outline: none;
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px dashed #00ff00;
+            min-height: 50px;
+            word-break: break-word;
+        }
+
+        .binary {
+            font-family: monospace;
+            letter-spacing: 2px;
+        }
+
+        .access-granted {
+            color: #39ff14;
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .attempt-counter {
+            color: #ff6600;
+            text-align: right;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container" id="loginContainer">
+        <h1>BURPSPLOIT v2.4.7 2025</h1>
+        <a href="index.html" class="chat-link">← kembali ke protokol CRYPTRARY-256</a>
+        
+        <div class="login-form">
+            <div class="input-group">
+                <label for="username">OPERATIVE ID:</label>
+                <input type="text" id="username" placeholder="Masukan ID">
+            </div>
+            
+            <div class="input-group">
+                <label for="password">CRYPTOKEY:</label>
+                <input type="password" id="password" placeholder="Masukan kata kunci">
+                <div class="attempt-counter" id="attemptCounter"></div>
+            </div>
+            
+            <button id="loginBtn">Aktivasi burpsploitv2.4.7.2025</button>
+            <div class="error-message" id="errorMessage">
+                AKSES DITOLAK: Pemenuhan tidak valid
+            </div>
+        </div>
+    </div>
+
+    <div class="decoder-container" id="decoderContainer" style="display:none">
+        <div class="access-granted" id="accessGranted">
+            AKSES DITERIMA: Status Exploiter -READY-
+        </div>
+        <h1>BURPSPLOIT v2.4.7 2025</h1>
+        <a href="index.html" class="chat-link">← kembali ke protokol CRYPTRARY-256</a>
+
+        <div class="decoder-area" id="decoderArea">
+            <div class="input-group">
+                <label for="binaryInput">KODE BINER (8-bit groups):</label>
+                <textarea id="binaryInput" placeholder="01001000 01100101 01101100 01101100 01101111"></textarea>
+            </div>
+
+            <div class="button-group">
+                <button id="decodeBtn">DECODE KE TEXT</button>
+                <button id="encodeBtn">ENCODE KE BINER</button>
+                <button id="clearBtn">SAPU DATA</button>
+            </div>
+
+            <div class="input-group">
+                <label for="textInput">PESAN MURNI:</label>
+                <textarea id="textInput" placeholder="Type message to encode"></textarea>
+            </div>
+
+            <div class="input-group">
+                <label>HASIL BURPSPLOIT:</label>
+                <div class="result" id="result"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Credentials
+        const VALID_USERNAME = "b4ndengPr3st0LAUT";
+        const VALID_PASSWORD = "dethroneSYSTEMY@54";
+        let attempts = 0;
+        const MAX_ATTEMPTS = 3;
+
+        // DOM elements
+        const loginContainer = document.getElementById('loginContainer');
+        const decoderContainer = document.getElementById('decoderContainer');
+        const decoderArea = document.getElementById('decoderArea');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+        const errorMessage = document.getElementById('errorMessage');
+        const attemptCounter = document.getElementById('attemptCounter');
+        const accessGranted = document.getElementById('accessGranted');
+
+        // Binary conversion functions
+        function textToBinary(text) {
+            return text.split('').map(char => {
+                return char.charCodeAt(0).toString(2).padStart(8, '0');
+            }).join(' ');
+        }
+
+        function binaryToText(binary) {
+            const cleanBinary = binary.replace(/[^01 ]/g, '');
+            const bytes = cleanBinary.split(' ');
+            let result = '';
+            for (let byte of bytes) {
+                if (byte.length !== 8) continue;
+                try {
+                    result += String.fromCharCode(parseInt(byte, 2));
+                } catch (e) {
+                    console.error('Error parsing byte:', byte);
+                }
+            }
+            return result;
+        }
+
+        // Update attempt counter
+        function updateAttemptCounter() {
+            attemptCounter.textContent = `Attempts: ${attempts}/${MAX_ATTEMPTS}`;
+            if (attempts >= MAX_ATTEMPTS) {
+                loginBtn.disabled = true;
+                loginBtn.textContent = "SYSTEM LOCKED";
+                errorMessage.textContent = "SECURITY LOCK: Too many failed attempts";
+                errorMessage.style.display = "block";
+            }
+        }
+
+        // Login function
+        function login() {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
+            
+            if (username === VALID_USERNAME && password === VALID_PASSWORD) {
+                // Successful login
+                loginContainer.style.display = "none";
+                decoderContainer.style.display = "block";
+                accessGranted.style.display = "block";
+                decoderArea.style.display = "flex";
+                
+                // Add slight delay for dramatic effect
+                setTimeout(() => {
+                    accessGranted.style.display = "none";
+                }, 3000);
+            } else {
+                // Failed login
+                attempts++;
+                updateAttemptCounter();
+                errorMessage.style.display = "block";
+                
+                // Shake animation for error
+                loginContainer.style.animation = "shake 0.5s";
+                setTimeout(() => {
+                    loginContainer.style.animation = "";
+                }, 500);
+            }
+        }
+
+        // Add shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                20%, 60% { transform: translateX(-5px); }
+                40%, 80% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Event listeners
+        loginBtn.addEventListener('click', login);
+        
+        // Allow login on Enter key
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                login();
+            }
+        });
+
+        // Initialize decoder functionality after login
+        const initializeDecoder = () => {
+            const binaryInput = document.getElementById('binaryInput');
+            const textInput = document.getElementById('textInput');
+            const resultDiv = document.getElementById('result');
+            const decodeBtn = document.getElementById('decodeBtn');
+            const encodeBtn = document.getElementById('encodeBtn');
+            const clearBtn = document.getElementById('clearBtn');
+
+            decodeBtn.addEventListener('click', () => {
+                const binary = binaryInput.value.trim();
+                if (binary) {
+                    const text = binaryToText(binary);
+                    resultDiv.innerHTML = `<strong>Decrypted message:</strong><br>${text}`;
+                    textInput.value = text;
+                } else {
+                    resultDiv.textContent = 'Enter binary code to decrypt';
+                }
+            });
+
+            encodeBtn.addEventListener('click', () => {
+                const text = textInput.value.trim();
+                if (text) {
+                    const binary = textToBinary(text);
+                    resultDiv.innerHTML = `<strong>Encrypted binary:</strong><br><span class="binary">${binary}</span>`;
+                    binaryInput.value = binary;
+                } else {
+                    resultDiv.textContent = 'Enter text to encrypt';
+                }
+            });
+
+            clearBtn.addEventListener('click', () => {
+                binaryInput.value = '';
+                textInput.value = '';
+                resultDiv.textContent = '';
+            });
+        };
+
+        // Initialize when page loads (will only work after login)
+        initializeDecoder();
+        updateAttemptCounter();
+    </script>
+</body>
+</html>
