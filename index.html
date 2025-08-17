@@ -50,12 +50,22 @@
             overflow-y: auto;
             padding: 15px;
             display: flex;
-            flex-direction: column-reverse;
+            flex-direction: column;
         }
 
         .messages-wrapper {
+            flex: 1;
             display: flex;
-            flex-direction: column;
+            flex-direction: column-reverse;
+            overflow-y: auto;
+        }
+
+        .system-message {
+            margin-top: auto;
+            padding: 10px;
+            border-left: 3px solid #00ff00;
+            word-break: break-word;
+            line-height: 1.4;
         }
 
         .message {
@@ -156,10 +166,11 @@
 
     <div class="chat-container" id="chatContainer">
         <div class="messages-wrapper" id="messagesWrapper">
-            <div class="message" style="border-left-color: #00ff00;">
-                <div class="message-username">SYSTEMY4S4</div>
-                <div class="message-text">Jaringan rahasia terjalin. Semua pesan di-enkripsi dengan protokol CRYPTRARY-256.</div>
-            </div>
+            <!-- Pesan baru akan muncul di sini di atas pesan system -->
+        </div>
+        <div class="system-message">
+            <div class="message-username">SYSTEMY4S4</div>
+            <div class="message-text">Jaringan rahasia terjalin. Semua pesan di-enkripsi dengan protokol CRYPTRARY-256.</div>
         </div>
     </div>
 
@@ -238,11 +249,10 @@
                 <div style="font-size: 0.7rem; color: #555; margin-top: 5px;">${timeString}</div>
             `;
             
-            messagesWrapper.insertBefore(messageElement, messagesWrapper.firstChild);
+            messagesWrapper.appendChild(messageElement);
             
-            if (chatContainer.scrollTop === 0) {
-                chatContainer.scrollTop = 0;
-            }
+            // Scroll ke bawah untuk melihat pesan terbaru
+            chatContainer.scrollTop = chatContainer.scrollHeight;
         }
 
         function sendMessage() {
@@ -271,9 +281,7 @@
             .orderBy('timestamp', 'desc')
             .limit(50)
             .onSnapshot((snapshot) => {
-                while (messagesWrapper.children.length > 1) {
-                    messagesWrapper.removeChild(messagesWrapper.lastChild);
-                }
+                messagesWrapper.innerHTML = ''; // Clear all messages except system
                 
                 snapshot.forEach((doc) => {
                     const data = doc.data();
